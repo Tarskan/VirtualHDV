@@ -2,9 +2,12 @@
     <div class="flex flex-col">
         <div class="card-box">
             <div class="flex pl-4 pr-4 pt-5 pb-5">
-                <label for="search" class="mr-2 ml-2 w-24">Recherche :</label>
+                <form class="flex">
+                    <label for="search" class="mr-2 ml-2 w-24">Recherche :</label>
 
-                <input id="search" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 ml-2 leading-tight focus:outline-none focus:shadow-outline">
+                    <input id="search" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 ml-2 leading-tight focus:outline-none focus:shadow-outline">
+                    <button class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Rechercher</button>
+                </form>
             </div>
         </div>
         <div class="flex flex-col">

@@ -99,10 +99,10 @@
             <ul class="mb-2">
                 <NuxtLink to="/myannounce">
                     <li v-if="menuTogle" class="block hover:bg-blue-700 transition duration-200">
-                        Contact
+                        Mes messages
                     </li>
                     <li v-else class="block hover:bg-blue-700 transition duration-200" @click="buttonInteraction">
-                        Contact
+                        Mes messages
                     </li>
                 </NuxtLink>
             </ul>
