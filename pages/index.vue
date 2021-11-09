@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="md:w-1/2 max-w-xs md:m-auto absolute md:inset-60">
-      <form class="bg-white shadow-md rounded px-7 pt-6 pb-8 mb-4">
+      <form class="bg-white shadow-md rounded mt-12 md:mt-0 px-7 pt-6 pb-8 mb-4">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
             Identifiant
