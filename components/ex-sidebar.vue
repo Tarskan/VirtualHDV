@@ -87,7 +87,7 @@
                 </NuxtLink>
             </ul>
             <ul class="mb-2">
-                <NuxtLink to="/myannounce">
+                <NuxtLink to="/myAnnounce">
                     <li v-if="menuTogle" class="block hover:bg-blue-700 transition duration-200">
                         Mes annonces
                     </li>
@@ -97,7 +97,7 @@
                 </NuxtLink>
             </ul>
             <ul class="mb-2">
-                <NuxtLink to="/myannounce">
+                <NuxtLink to="/myMessage">
                     <li v-if="menuTogle" class="block hover:bg-blue-700 transition duration-200">
                         Mes messages
                     </li>

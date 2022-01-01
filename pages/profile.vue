@@ -1,12 +1,12 @@
 <template>
-    <div class="card-box flex flex-col">
+    <div class="card-box xl:h-full flex flex-col">
         <div class="text-center ml-5 mr-5 mb-5">
             <img class="mt-5 rounded mx-auto" src="https://play-lh.googleusercontent.com/8ddL1kuoNUB5vUvgDVjYY3_6HwQcrg1K2fd_R8soD-e2QYj8fT9cfhfh3G0hnSruLKec" alt="Photo de profile" width="384em" height="512em">
             <span class="font-bold">
-                {{ user.pseudo }}
+                Pseudo : {{ user.pseudo }}
             </span>
         </div>
-        <div class="m-auto">
+        <div class="text-center">
             <h3 class="text-center">Information personnel :</h3>
             <div class="flex flex-col mb-5">
                 <span>Nom complet : {{ user.firstname }} {{ user.lastname }}</span>

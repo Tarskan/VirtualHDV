@@ -1,5 +1,6 @@
 # virtualhdv
 
+This project is a school project
 ## Build Setup
 
 ```bash
