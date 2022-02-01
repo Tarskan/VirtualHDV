@@ -1,27 +1,27 @@
 <template>
   <div>
-    <div class="md:w-1/2 max-w-xs md:m-auto absolute md:inset-60">
+    <div class="md:w-1/2 max-w-sm md:m-auto absolute md:inset-60">
       <form class="bg-white shadow-md rounded mt-12 md:mt-0 px-7 pt-6 pb-8 mb-4">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
             Identifiant
           </label>
-          <input id="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
+          <input id="username" v-model="connexion.pseudo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
         </div>
         <div class="mb-6">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
             Mot de passe
           </label>
-          <input id="password" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="password" placeholder="******************">
+          <input id="password" v-model="connexion.password" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="password" placeholder="******************">
           <p class="text-red-500 text-xs italic">Choisisez un mot de passe</p>
         </div>
         <div class="flex items-center justify-between">
           <NuxtLink to="/home">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="Connexion">
               Connexion
             </button>
           </NuxtLink>
-          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-2" href="#">
             Mot de passe oubliée ?
           </a>
         </div>
@@ -35,7 +35,28 @@
 
 <script>
 export default {
-  layout: 'opening'
+  layout: 'opening',
+  data: () => ({
+        menuTogle: true,
+        connexion: {
+            pseudo: undefined,
+            password: undefined
+        }
+    }),
+    methods: {
+        async Connexion(){
+            try {
+              const test = await this.$axios.$get('/api/connexion', 
+              { 
+                pseudo: this.connexion.pseudo, 
+                password: this.connexion.password
+              })
+              console.log(test)
+            } catch (error) {
+              console.log(error)
+            }
+        }
+    }
 }
 </script>
 

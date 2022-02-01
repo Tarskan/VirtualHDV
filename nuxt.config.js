@@ -3,7 +3,7 @@ export default {
   head: {
     title: 'virtualhdv',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'fr'
     },
     meta: [
       { charset: 'utf-8' },
@@ -14,6 +14,11 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
+  },
+
+  server: {
+    port: 8000,
+    host: '0.0.0.0'
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -44,7 +49,9 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:8081'
+  },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {},

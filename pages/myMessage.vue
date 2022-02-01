@@ -1,8 +1,10 @@
 <template>
-    <div>
-        <div>
+    <div class="flex flex-row">
+        <div class="card-box flex-grow">
+            <h1>Messages echanger avec : </h1>
         </div>
-        <div>
+        <div class="card-box grow">
+            <h1>Listes des contacts</h1>
         </div>
     </div>
 </template>

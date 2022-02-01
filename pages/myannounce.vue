@@ -15,18 +15,33 @@
         </div>
         <div class="flex flex-col">
             <div class="card-box p-4">
-                <div class="flex pl-4 pr-4 pt-5 pb-5">
-                    <p class="m-auto">pagination</p>
+                <div class="flex">
+                    <ex-pagination
+                        v-if="count > size"
+                        class="mb-4"
+                        :page="page"
+                        :total="count"
+                        :size="size"
+                    />
                 </div>
             </div>
-            <div class="card-box p-4 h-24 min-h-full">
-                <div class="flex sm:flex-wrap pl-4 pr-4 pt-5 pb-5">
-                    <p>liste de mes annonces</p>
+            <div v-for="advert in adverts"
+                :key="advert.id"> 
+                <div class="card-box p-4 h-24 min-h-full">
+                    <h2>{{advert.name}}</h2>
+                    <p>{{advert.description}}</p>
+                    <p class="text-right">Prix : {{advert.prix}}</p>
                 </div>
             </div>
             <div class="card-box p-4">
-                <div class="flex pl-4 pr-4 pt-5 pb-5">
-                    <p class="m-auto">pagination</p>
+                <div class="flex">
+                    <ex-pagination
+                        v-if="count > size"
+                        class="mb-4"
+                        :page="page"
+                        :total="count"
+                        :size="size"
+                    />
                 </div>
             </div>
         </div>
@@ -37,17 +52,28 @@
 export default {
     data: () => ({
         menuTogle: true,
+        size: 10,
+        count: 11,
+        page: 1,
+        adverts: undefined,
         user: {
             pseudo: 'Tarskan',
             adress: 'test',
             city: 'Wattignies',
             lastname: 'Six',
             firstname: 'Tristan',
-            Autority: ''
+            Autority: '',
+            id_user: 1
         }
     }),
+    fetch() {
+        this.MyAnnounce()
+    },
     methods: {
-         
+         async MyAnnounce(){
+            const url = '/api/advert/search/'+ this.user.id_user
+            this.adverts = await this.$axios.$get(url)
+        }
     }
 }
 </script>
