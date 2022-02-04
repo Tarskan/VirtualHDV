@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data: () => ({
         menuTogle: true,
@@ -137,12 +138,12 @@ export default {
     },
     methods: {
         async MyAnnounce(){
-            const url = '/api/advert/search/idUser/'+ this.user.id_user
-            this.adverts = await this.$axios.$get(url)
+            const url = 'http://localhost:8081/api/advert/search/idUser/'+ this.user.id_user
+            this.adverts = (await axios.get(url)).data
             this.count = this.adverts.length
         },
         async getTypeAdvert() {
-            this.typeAdverts = await this.$axios.$get('/api/advertType')
+            this.typeAdverts = (await axios.get('http://localhost:8081/api/advertType')).data
         },
         async CreateAdvert() {
 

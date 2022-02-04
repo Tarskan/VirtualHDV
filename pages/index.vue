@@ -16,11 +16,9 @@
           <p class="text-red-500 text-xs italic">Choisisez un mot de passe</p>
         </div>
         <div class="flex items-center justify-between">
-          <NuxtLink to="/home">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="Connexion">
-              Connexion
-            </button>
-          </NuxtLink>
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="Connexion">
+            Connexion
+          </button>
           <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-2" href="#">
             Mot de passe oubliée ?
           </a>
@@ -34,6 +32,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   layout: 'opening',
   data: () => ({
@@ -46,12 +45,12 @@ export default {
     methods: {
         async Connexion(){
             try {
-              const test = await this.$axios.$get('/api/connexion', 
-              { 
-                pseudo: this.connexion.pseudo, 
-                password: this.connexion.password
-              })
-              console.log(test)
+              const test = await axios.post('http://localhost:8081/api/connexion', 
+              this.connexion)
+              localStorage.setItem('user', JSON.stringify(test.data));
+              if(test.status === 200){
+                this.$router.push({name:'home'}); 
+              }
             } catch (error) {
               console.log(error)
             }

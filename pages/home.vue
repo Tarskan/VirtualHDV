@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data: () => ({
     messages: [
@@ -73,15 +74,7 @@ export default {
       {from: 'titi', name:'masque freddy kruegger', price: 21, currency: '€'}
     ],
     currency: '€',
-    user: {
-      pseudo: 'Tarskan',
-      adress: 'test',
-      city: 'Wattignies',
-      lastname: 'Six',
-      firstname: 'Tristan',
-      Autority: '',
-      id_user: 1
-    },
+    user: undefined,
     query: undefined,
     size: 5,
     previous: 0,
@@ -89,19 +82,18 @@ export default {
     page: 1,
     adverts: undefined
   }),
-  fetch() {
-    this.MyAnnounce()
+  async fetch() {
+    this.user = JSON.parse(localStorage.user)
+    await this.MyAnnounce()
   },
   methods: {
     async MyAnnounce(){
-      const url = '/api/advert/search/idUser/'+ this.user.id_user
-      this.adverts = await this.$axios.$get(url)
+      const url = 'http://localhost:8081/api/advert/search/idUser/'+ this.user.id_user
+      this.adverts = (await axios.get(url)).data
       this.count = this.adverts.length
     },
     goSearch() {
-      this.$router.push({name:'search', query: {query: this.query}}); 
-      // this.$router.push('/home' , {query: this.query, search: this.query})
-      // this.$route.fullPath = '/search?query=' + this.query
+      this.$router.push({name:'search', query: {query: this.query}});
     }
   }
 }

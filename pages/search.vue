@@ -19,10 +19,11 @@
                         :page="page"
                         :total="count"
                         :size="size"
+                        @page="(p) => page = p"
                     />
                 </div>
             </div>
-            <div v-for="advert in adverts"
+            <div v-for="advert in pagination"
                 :key="advert.id"> 
                 <div class="card-box p-4 h-24 min-h-full">
                     <h2>{{advert.name}}</h2>
@@ -38,6 +39,7 @@
                         :page="page"
                         :total="count"
                         :size="size"
+                        @page="(p) => page = p"
                     />
                 </div>
             </div>
@@ -46,6 +48,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data: () => ({
         menuTogle: true,
@@ -64,6 +67,15 @@ export default {
         },
         searchQuery: undefined
     }),
+    computed: {
+        pagination() {
+            if(this.adverts) {
+                return this.adverts.slice((this.page-1)*this.size, this.page*this.size)
+            } else {
+                return undefined
+            }
+        }
+    },
     async fetch() {
         if(this.$route.query.query !==undefined) {
             this.searchQuery = this.$route.query.query
@@ -74,15 +86,15 @@ export default {
     },
     methods: {
         async GetAdvert() {
-            this.adverts = await this.$axios.$get('/api/advert')
+            this.adverts = (await axios.get('http://localhost:8081/api/advert')).data
             this.count = this.adverts.length
         },
         async SearchAdvert() {
             if (this.searchQuery === undefined || this.searchQuery === "") {
                 this.GetAdvert() 
             } else {
-                const request = '/api/advert/search/name/' + this.searchQuery
-                this.adverts = await this.$axios.$get(request)
+                const request = 'http://localhost:8081/api/advert/search/name/' + this.searchQuery
+                this.adverts = (await axios.get(request)).data
                 this.count = this.adverts.length
             }
         }

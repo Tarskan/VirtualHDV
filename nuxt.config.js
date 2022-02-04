@@ -1,3 +1,5 @@
+import { SpeakerIcon } from "vue-feather-icons";
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -42,19 +44,14 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
     // https://go.nuxtjs.dev/content
-    '@nuxt/content',
+    '@nuxt/content'
   ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {
-    baseURL: 'http://localhost:8081'
-  },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {},
+
+  mode:'spa',
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

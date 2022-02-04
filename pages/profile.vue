@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data: () => ({
         menuTogle: true,
@@ -107,8 +108,8 @@ export default {
         //     })
        },
        async Suppress() {
-            const urlFormated = "/api/user/" + this.user.id
-            await this.$axios.$delete(urlFormated)
+            const urlFormated = "http://localhost:8081/api/user/" + this.user.id
+            await axios.delete(urlFormated)
        } 
     }
 }
