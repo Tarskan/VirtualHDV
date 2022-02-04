@@ -14,14 +14,14 @@
                 <span>Ville : {{ user.city }}</span>
             </div>
             <div class="mb-4">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="show = true">Modifier le compte</button>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Supprimer le compte</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="showModification = true">Modifier le compte</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="showSuppres = true">Supprimer le compte</button>
             </div>
         </div>
-        <ex-modal v-if="show" :popup="true" :scroll="true" @close="show = false">
-            <h-3 class="text-blue mb-4 mt-0">
+        <ex-modal v-if="showModification" :popup="true" :scroll="true" @close="showModification = false">
+            <h3 class="text-blue mb-4 mt-0">
                 Formulaire de modification de profile
-            </h-3>
+            </h3>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                     Identifiant :
@@ -29,26 +29,26 @@
                 <input id="username" v-model="user.pseudo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="firstname">
                     Prénom :
                 </label>
-                <input id="username" v-model="user.firstname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                <input id="firstname" v-model="user.firstname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="lastname">
                     Nom :
                 </label>
-                <input id="username" v-model="user.lastname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
+                <input id="lastname" v-model="user.lastname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="adress">
                     Adresse :
                 </label>
-                <input id="username" v-model="user.adress" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
+                <input id="adress" v-model="user.adress" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="city">
                     ville : 
                 </label>
-                <input id="username" v-model="user.city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
+                <input id="city" v-model="user.city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Identifiant">
             </div>
             <div class="mb-6">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
@@ -63,6 +63,22 @@
                 </button>
             </div>
         </ex-modal>
+        <ex-modal v-if="showSuppres" :popup="true" :scroll="true" @close="showSuppres = false">
+            <h3 class="text-blue mb-4 mt-0">
+                Suppression du profile
+            </h3>
+            <div class="mb-4">
+                <p>Êtes vous absolument sur de vouloir supprimer votre compte ?</p>
+            </div>
+            <div class="flex items-center justify-between">
+                <button 
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                    type="button"
+                    @click="Suppress">
+                    Supprimer le compte
+                </button>
+            </div>
+        </ex-modal>
     </div>
 </template>
 
@@ -70,8 +86,10 @@
 export default {
     data: () => ({
         menuTogle: true,
-        show: false,
+        showModification: false,
+        showSuppres: false,
         user: {
+            id: 1,
             pseudo: 'Tarskan',
             adress: 'test',
             city: 'Wattignies',
@@ -81,13 +99,17 @@ export default {
         }
     }),
     methods: {
-       async modifDataUser(){
+       async modifDataUser() {
         //    const test = await this.$axios.$get('/api/connexion', 
         //     { 
         //         pseudo: this.connexion.pseudo, 
         //         password: this.connexion.password
         //     })
-       }  
+       },
+       async Suppress() {
+            const urlFormated = "/api/user/" + this.user.id
+            await this.$axios.$delete(urlFormated)
+       } 
     }
 }
 </script>

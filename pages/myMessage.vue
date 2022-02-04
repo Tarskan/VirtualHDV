@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row">
+    <div class="flex flex-row h-full">
         <div class="card-box flex-grow">
             <h1>Messages echanger avec : </h1>
         </div>

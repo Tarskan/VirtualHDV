@@ -5,13 +5,13 @@
                 <form class="flex">
                     <label for="search" class="mr-2 pt-2 ml-2 w-28">Recherche</label>
 
-                    <input id="search" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
-                    <button class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Rechercher</button>
+                    <input id="search" v-model="searchQuery" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                    <button class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" @click.prevent="SearchAdvert">Rechercher</button>
                 </form>
             </div>
         </div>
         <div class="flex flex-col">
-            <div class="card-box p-4">
+            <div v-if="count > size" class="card-box p-4">
                 <div class="flex">
                     <ex-pagination
                         v-if="count > size"
@@ -30,7 +30,7 @@
                     <p class="text-right">Prix : {{advert.prix}}</p>
                 </div>
             </div>
-            <div class="card-box p-4">
+            <div v-if="count > size" class="card-box p-4">
                 <div class="flex">
                     <ex-pagination
                         v-if="count > size"
@@ -49,8 +49,9 @@
 export default {
     data: () => ({
         menuTogle: true,
-        size: 10,
-        count: 11,
+        size: 5,
+        previous: 0,
+        count: undefined,
         page: 1,
         adverts: undefined,
         user: {
@@ -60,14 +61,30 @@ export default {
             lastname: 'Six',
             firstname: 'Tristan',
             Autority: ''
-        }
+        },
+        searchQuery: undefined
     }),
-    fetch() {
-        this.GetAdvert()
+    async fetch() {
+        if(this.$route.query.query !==undefined) {
+            this.searchQuery = this.$route.query.query
+            await this.SearchAdvert()
+        } else {
+            await this.GetAdvert()
+        }     
     },
     methods: {
-        async GetAdvert(){
+        async GetAdvert() {
             this.adverts = await this.$axios.$get('/api/advert')
+            this.count = this.adverts.length
+        },
+        async SearchAdvert() {
+            if (this.searchQuery === undefined || this.searchQuery === "") {
+                this.GetAdvert() 
+            } else {
+                const request = '/api/advert/search/name/' + this.searchQuery
+                this.adverts = await this.$axios.$get(request)
+                this.count = this.adverts.length
+            }
         }
     }
 }
