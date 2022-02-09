@@ -9,6 +9,18 @@
                 </form>
             </div>
         </div>
+        <div class="mb-5">
+            <div v-if="mode === 'bought'">
+                <button class="m-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="mode = 'sold'">
+                    Mes achats
+                </button>
+            </div>
+            <div v-else>
+                <button class="m-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" @click="mode = 'bought'">
+                    Mes ventes
+                </button>
+            </div>
+        </div>
         <div class="flex flex-col">
             <div v-if="count > size" class="card-box p-4">
                 <div class="flex">
@@ -27,9 +39,6 @@
                 <nuxt-link :to="'/advert?query=' + advert.id_advert">
                     <div class="card-box p-4 min-h-full">
                         <h2>{{advert.name}}</h2>
-                        <img class="object-scale-down h-48 w-96 mt-5 mb-5 rounded mx-auto" 
-                        :src="advert.url"
-                        alt="Photo de l'annonce">
                         <p class="break-all">{{advert.description}}</p>
                         <p class="text-right">Prix : {{advert.prix}} {{currency}}</p>
                     </div>
@@ -73,15 +82,11 @@ export default {
         },
         searchQuery: undefined,
         currency: '€',
+        mode: 'bought'
     }),
     async fetch() {
         this.user = JSON.parse(localStorage.user)
-        if(this.$route.query.query !== undefined) {
-            this.searchQuery = this.$route.query.query
-            await this.SearchAdvert()
-        } else {
-            await this.GetAdvert()
-        }     
+        await this.GetBoughtAdvert() 
     },
     computed: {
         pagination() {
@@ -93,20 +98,54 @@ export default {
         }
     },
     watch: {
+        mode() {
+            if(this.mode === 'bought') {
+                this.SearchBoughtAdvert()
+            } else {
+                this.SearchSelltAdvert()
+            }
+                
+        },
         searchQuery() {
-            this.SearchAdvert()
+            if(this.mode === 'bought') {
+                if(this.searchQuery === undefined || this.searchQuery === "") {
+                    this.GetBoughtAdvert()
+                } else {
+                    this.SearchBoughtAdvert()
+                } 
+            } else if(this.mode === 'sold') {
+                if(this.searchQuery === undefined || this.searchQuery === "") {
+                    this.GetSoldAdvert()
+                } else {
+                    this.SearchSelltAdvert()
+                } 
+            }
+                
         }
     },
     methods: {
-        async GetAdvert() {
-            this.adverts = (await axios.get('http://localhost:8081/api/advert/' + this.user.id_user)).data
+        async GetBoughtAdvert() {
+            this.adverts = (await axios.get('http://localhost:8081/api/advert/bought/' + this.user.id_user)).data
             this.count = this.adverts.length
         },
-        async SearchAdvert() {
+        async GetSoldAdvert() {
+            this.adverts = (await axios.get('http://localhost:8081/api/advert/sold/' + this.user.id_user)).data
+            this.count = this.adverts.length
+        },
+        async SearchBoughtAdvert() {
             if (this.searchQuery === undefined || this.searchQuery === "") {
-                this.GetAdvert() 
+                this.GetBoughtAdvert() 
             } else {
-                const request = 'http://localhost:8081/api/advert/search/name/' + this.searchQuery + '/without/' + this.user.id_user
+                const request = 'http://localhost:8081/api/advert/bought/'+ this.user.id_user + '/query/' + this.searchQuery
+                this.adverts = (await axios.get(request)).data
+                this.count = this.adverts.length
+            }
+        },
+        async SearchSelltAdvert() {
+            if (this.searchQuery === undefined || this.searchQuery === "") {
+                this.GetSoldAdvert()
+            } else {
+                const request = 'http://localhost:8081/api/advert/sold/' + this.user.id_user + '/query/' + this.searchQuery
                 this.adverts = (await axios.get(request)).data
                 this.count = this.adverts.length
             }

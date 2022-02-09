@@ -2,10 +2,10 @@
     <div class="bg-blue-800 text-blue-100 flex-col bg-blue-800 space-y-6 py-7 absolute inset-y-0 
         left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out w-32 md:w-64">
         <div class="text-center mb-5">
-            <img class="w-32 h-32 rounded-full mx-auto" src="https://play-lh.googleusercontent.com/8ddL1kuoNUB5vUvgDVjYY3_6HwQcrg1K2fd_R8soD-e2QYj8fT9cfhfh3G0hnSruLKec" alt="Photo de profile" width="384em" height="512em">
+            <img class="w-32 h-32 rounded-full mx-auto" :src="user.url" alt="Photo de profile" width="384em" height="512em">
             <NuxtLink to="/profile">
                 <span class="font-bold">
-                    {{ user.name }}
+                    {{ user.pseudo }}
                 </span>
             </NuxtLink>
         </div>
@@ -97,6 +97,16 @@
                 </NuxtLink>
             </ul>
             <ul class="mb-2">
+                <NuxtLink to="/myBoughtAndSell">
+                    <li v-if="menuTogle" class="block hover:bg-blue-700 transition duration-200">
+                        Mes achats/ventes
+                    </li>
+                    <li v-else class="block hover:bg-blue-700 transition duration-200" @click="buttonInteraction">
+                        Mes achats/ventes
+                    </li>
+                </NuxtLink>
+            </ul>
+            <ul class="mb-2">
                 <NuxtLink to="/myMessage">
                     <li v-if="menuTogle" class="block hover:bg-blue-700 transition duration-200">
                         Mes messages
@@ -124,11 +134,11 @@
 export default {
     data: () => ({
         menuTogle: true,
-        user: {
-            name: 'Tarskan',
-            Autority: ''
-        }
+        user: undefined
     }),
+    fetch() {
+        this.user = JSON.parse(localStorage.user)
+    },
     methods: {
         buttonInteraction(){
             if(this.menuTogle === true){

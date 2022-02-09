@@ -19,15 +19,18 @@
               :page="page"
               :total="count"
               :size="size"
+              @page="(p) => page = p"
             />
           </div>
         </div>
         <div v-if="adverts" class="m-2">
-          <div v-for="advert in adverts"
-                :key="advert.id" class="card-box mb-4 pr-2 pl-2 pt-3 flex flex-col w-full">
-            <h2 class="text-center">{{advert.name}}</h2>
-            <p>Description : {{advert.description}}</p>
-            <p class="text-right">Prix : {{advert.prix}}<span>{{ currency}}</span></p>
+          <div v-for="advert in pagination"
+                :key="advert.id_advert" class="card-box mb-4 pr-2 pl-2 pt-3 flex flex-col w-full">
+            <nuxt-link :to="'/advert?query=' + advert.id_advert">
+              <h2 class="text-center">{{advert.name}}</h2>
+              <p class="max-w-md break-all">Description : {{advert.description}}</p>
+              <p class="text-right">Prix : {{advert.prix}}<span>{{ currency}}</span></p>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -43,7 +46,7 @@
     </div>
     <div class="flex flex-row items-stretch justify-between pl-4 pr-4 pt-5">
       <div class="card-box w-full ml-3 mr-3">
-        <h1 class="text-center">Produit star</h1>
+        <h1 class="text-center">Produit récemment vendu :</h1>
         <div v-if="offers.length > 0" class="flex flex-col sm:flex-row">
           <div v-for="offer in offers.slice(0, 5)" :key="offer.name" class="mb-4 flex flex-col w-full">
             <span class="ml-3">{{ offer.name }}</span>
@@ -76,7 +79,7 @@ export default {
     currency: '€',
     user: undefined,
     query: undefined,
-    size: 5,
+    size: 4,
     previous: 0,
     count: undefined,
     page: 1,
@@ -86,9 +89,18 @@ export default {
     this.user = JSON.parse(localStorage.user)
     await this.MyAnnounce()
   },
+  computed: {
+    pagination() {
+      if(this.adverts) {
+        return this.adverts.slice((this.page-1)*this.size, this.page*this.size)
+      } else {
+        return undefined
+      }
+    }
+  },
   methods: {
     async MyAnnounce(){
-      const url = 'http://localhost:8081/api/advert/search/idUser/'+ this.user.id_user
+      const url = 'http://localhost:8081/api/advert/search/'+ this.user.id_user
       this.adverts = (await axios.get(url)).data
       this.count = this.adverts.length
     },
