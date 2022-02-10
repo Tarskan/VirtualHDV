@@ -69,8 +69,8 @@
                 </label>
                 <input 
                     id="image" 
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                     ref="file"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                     type="file"
                     placeholder="Nom de l'annonce">
             </div>
@@ -93,7 +93,7 @@
                     v-model="advert.id_adverttype" 
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                     placeholder="Type de produit">
-                    <option value="">Séléctionner un type de produit</option>
+                    <option :value="null" selected="selected">Séléctionner un type de produit</option>
                     <option
                         v-for="option in typeAdverts"
                         :key="option.id_adverttype"
@@ -143,7 +143,16 @@ export default {
             first_name: undefined,
             url: undefined
         },
-        advert: undefined,
+        advert: {
+            id_advert: undefined,
+            name: undefined,
+            description: undefined,
+            prix: undefined,
+            url: undefined,
+            id_adverttype: undefined,
+            id_user: undefined,
+            soldto: undefined,
+        },
         typeAdverts: undefined,
         typeAdvertForThis: undefined,
         query: undefined,
@@ -208,6 +217,12 @@ export default {
             }
             if(this.sold && !this.mine) {
                 this.vendor = (await axios.get('http://localhost:8081/api/user/' + this.advert.id_user)).data
+                const tchat = {
+                    id_userone: this.vendor.id_user,
+                    id_usertwo: this.user.id_user,
+                    id_advert: this.advert.id_advert
+                }
+                await axios.post('http://localhost:8081/api/tchat/', tchat)
             }
         }
     }

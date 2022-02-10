@@ -5,7 +5,7 @@
                 <form class="flex flex-grow">
                     <label for="search" class="mr-2 pt-2 ml-2 w-32">Recherche</label>
 
-                    <input v-model="query" id="search" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                    <input id="search" v-model="query" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
                 </form>
                 <div class="flex mt-3 md:mt-3 lg:mt-0 sm:m-auto">
                     <button 
@@ -69,8 +69,8 @@
                 </label>
                 <input 
                     id="image" 
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                     ref="file"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                     type="file"
                     placeholder="Nom de l'annonce">
             </div>
@@ -93,7 +93,7 @@
                     v-model="advertSent.id_adverttype" 
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                     placeholder="Type de produit">
-                    <option value="">Séléctionner un type de produit</option>
+                    <option :value="null" selected="selected">Séléctionner un type de produit</option>
                     <option
                         v-for="option in typeAdverts"
                         :key="option.id_adverttype"
