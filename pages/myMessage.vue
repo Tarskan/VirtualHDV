@@ -34,8 +34,7 @@
         <div class="card-box grow">
             <h1>Listes des contacts :</h1>
             <div v-for="tchatByAdvert in myTchat"
-                :key="tchatByAdvert.tchat.id_tchat" 
-                class="overflow max-heigth">
+                :key="tchatByAdvert.tchat.id_tchat">
                 <div class="card-box p-4 min-h-full pointer" @click="setDiscusion(tchatByAdvert.tchat.id_tchat, tchatByAdvert.vendor.pseudo)">
                     <h2>{{ tchatByAdvert.advert.name }}</h2>
                     <p class="break-all">Vendeur : {{ tchatByAdvert.vendor.pseudo }}</p>

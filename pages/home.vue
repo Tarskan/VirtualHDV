@@ -49,11 +49,10 @@
           </div>
         </div>
         <div v-if="myTchat" class="m-2">
-          <div v-for="tchatByAdvert in myTchat"
-              :key="tchatByAdvert.tchat.id_tchat" 
-              class="overflow max-heigth">
+          <div v-for="tchatByAdvert in paginationTchat"
+              :key="tchatByAdvert.tchat.id_tchat">
             <nuxt-link :to="'/myMessage?query=' + tchatByAdvert.tchat.id_tchat + '&name=' + tchatByAdvert.vendor.pseudo">
-              <div class="card-box p-4 pointer">
+              <div class="card-box mb-4 pr-2 pl-2 pt-3 pointer">
                 <h2>{{ tchatByAdvert.advert.name }}</h2>
                 <p class="break-all">Vendeur : {{ tchatByAdvert.vendor.pseudo }}</p>
                 <p class="text-right">Prix : {{ tchatByAdvert.advert.prix }}</p>
@@ -66,10 +65,9 @@
     <div class="flex flex-row items-stretch justify-between pl-4 pr-4 pt-5">
       <div class="card-box w-full ml-3 mr-3">
         <h1 class="text-center">Produit récemment vendu :</h1>
-        <div v-if="solded" class="flex flex-col sm:flex-row">
+        <div v-if="solded" class="flex flex-col sm:flex-row justify-evenly">
           <div v-for="sold in solded"
-              :key="sold.id_tchat" 
-              class="overflow max-heigth">
+              :key="sold.id_tchat">
               <div class="card-box p-4">
                 <h2>{{ sold.name }}</h2>
                 <p class="text-right">Prix : {{ sold.prix }}</p>
@@ -113,8 +111,8 @@ export default {
       }
     },
     paginationTchat() {
-      if(this.adverts) {
-        return this.adverts.slice((this.pageAdvert-1)*this.size, this.pageAdvert*this.size)
+      if(this.myTchat) {
+        return this.myTchat.slice((this.pageTchat-1)*this.size, this.pageTchat*this.size)
       } else {
         return undefined
       }
