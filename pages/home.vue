@@ -11,20 +11,20 @@
     <div class="flex md:flex-row flex-col items-stretch justify-between pl-4 pr-4 pt-5">
       <div class="card-box w-full ml-3 mr-3">
         <h2 class="text-center">Mes annonces :</h2>
-        <div v-if="count > size">
+        <div v-if="countAdvert > size">
           <div class="flex">
             <ex-pagination
-              v-if="count > size"
+              v-if="countAdvert > size"
               class="mb-4"
-              :page="page"
-              :total="count"
+              :page="pageAdvert"
+              :total="countAdvert"
               :size="size"
-              @page="(p) => page = p"
+              @page="(p) => pageAdvert = p"
             />
           </div>
         </div>
         <div v-if="adverts" class="m-2">
-          <div v-for="advert in pagination"
+          <div v-for="advert in paginationAdvert"
                 :key="advert.id_advert" class="card-box mb-4 pr-2 pl-2 pt-3 flex flex-col w-full">
             <nuxt-link :to="'/advert?query=' + advert.id_advert">
               <h2 class="text-center">{{advert.name}}</h2>
@@ -35,11 +35,30 @@
         </div>
       </div>
       <div class="card-box w-full ml-3 mr-3">
-        <h2 class="text-center">Mes messages :</h2>
-        <div v-if="messages.length > 0">
-          <div v-for="message in messages" :key="message.from" class="mb-4 w-full">
-            <span class="ml-3">De : {{ message.from }}</span>
-            <p class="ml-3">{{ message.text }}</p> 
+        <h2 class="text-center">Mes Tchat:</h2>
+        <div v-if="countTchat > size">
+          <div class="flex">
+            <ex-pagination
+              v-if="countTchat > size"
+              class="mb-4"
+              :page="pageTchat"
+              :total="countTchat"
+              :size="size"
+              @page="(p) => pageTchat = p"
+            />
+          </div>
+        </div>
+        <div v-if="myTchat" class="m-2">
+          <div v-for="tchatByAdvert in myTchat"
+              :key="tchatByAdvert.tchat.id_tchat" 
+              class="overflow max-heigth">
+            <nuxt-link :to="'/myMessage?query=' + tchatByAdvert.tchat.id_tchat + '&name=' + tchatByAdvert.vendor.pseudo">
+              <div class="card-box p-4 pointer">
+                <h2>{{ tchatByAdvert.advert.name }}</h2>
+                <p class="break-all">Vendeur : {{ tchatByAdvert.vendor.pseudo }}</p>
+                <p class="text-right">Prix : {{ tchatByAdvert.advert.prix }}</p>
+              </div>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -47,11 +66,14 @@
     <div class="flex flex-row items-stretch justify-between pl-4 pr-4 pt-5">
       <div class="card-box w-full ml-3 mr-3">
         <h1 class="text-center">Produit récemment vendu :</h1>
-        <div v-if="offers.length > 0" class="flex flex-col sm:flex-row">
-          <div v-for="offer in offers.slice(0, 5)" :key="offer.name" class="mb-4 flex flex-col w-full">
-            <span class="ml-3">{{ offer.name }}</span>
-            <span class="ml-3">Vendeur : {{ offer.from }}</span>
-            <p class="ml-3">{{ offer.price }} <span>{{ offer.currency}}</span></p> 
+        <div v-if="solded" class="flex flex-col sm:flex-row">
+          <div v-for="sold in solded"
+              :key="sold.id_tchat" 
+              class="overflow max-heigth">
+              <div class="card-box p-4">
+                <h2>{{ sold.name }}</h2>
+                <p class="text-right">Prix : {{ sold.prix }}</p>
+              </div>
           </div>
         </div>
       </div>
@@ -63,36 +85,36 @@
 import axios from 'axios';
 export default {
   data: () => ({
-    messages: [
-      {from: 'toto', text: 'Super produit merci !'},
-      {from: 'tata', text: 'Produit reçue merci !'},
-      {from: 'titi', text: 'Produit reçue merci !'}
-    ],
-    offers: [
-      {from: 'toto', name:'Gandalf figurine', price: 24, currency: '€'},
-      {from: 'tata', name:'Manuel donjon et dragon', price: 34, currency: '€'},
-      {from: 'titi', name:'set de dés', price: 12, currency: '€'},
-      {from: 'toto', name:'Sauron figurine', price: 78, currency: '€'},
-      {from: 'tata', name:'Manuel donjon et dragon pathfinder', price: 54, currency: '€'},
-      {from: 'titi', name:'masque freddy kruegger', price: 21, currency: '€'}
-    ],
+    myTchat: undefined,
+    solded: undefined,
     currency: '€',
     user: undefined,
     query: undefined,
     size: 4,
     previous: 0,
-    count: undefined,
-    page: 1,
+    countAdvert: undefined,
+    countTchat: undefined,
+    pageAdvert: 1,
+    pageTchat: 1,
     adverts: undefined
   }),
   async fetch() {
     this.user = JSON.parse(localStorage.user)
     await this.MyAnnounce()
+    await this.getMyTchat()
+    await this.soldAnnounce()
   },
   computed: {
-    pagination() {
+    paginationAdvert() {
       if(this.adverts) {
-        return this.adverts.slice((this.page-1)*this.size, this.page*this.size)
+        return this.adverts.slice((this.pageAdvert-1)*this.size, this.pageAdvert*this.size)
+      } else {
+        return undefined
+      }
+    },
+    paginationTchat() {
+      if(this.adverts) {
+        return this.adverts.slice((this.pageAdvert-1)*this.size, this.pageAdvert*this.size)
       } else {
         return undefined
       }
@@ -100,13 +122,19 @@ export default {
   },
   methods: {
     async MyAnnounce(){
-      const url = 'http://localhost:8081/api/advert/search/'+ this.user.id_user
-      this.adverts = (await axios.get(url)).data
-      this.count = this.adverts.length
+      this.adverts = (await axios.get('http://localhost:8081/api/advert/search/'+ this.user.id_user)).data
+      this.countAdvert = this.adverts.length
     },
     goSearch() {
       this.$router.push({name:'search', query: {query: this.query}});
-    }
+    },
+    async soldAnnounce() {
+      this.solded = (await axios.get('http://localhost:8081/api/advert/allsold')).data
+    },
+    async getMyTchat() {
+      this.myTchat = (await axios.get('http://localhost:8081/api/tchat/' + this.user.id_user)).data
+      this.countTchat = this.myTchat.length
+    },
   }
 }
 </script>

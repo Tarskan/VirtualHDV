@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row h-full">
         <div class="card-box flex-grow">
-            <h1 class="card-box">Discusion : </h1>
+            <h1 class="card-box">Discusion : {{ discussWith }}</h1>
             <div v-if="conversation" class="flex overflow flex-col grow max-heigth">
                 <div v-for="messageLine in conversation"
                 :key="messageLine.id_message">
@@ -36,7 +36,7 @@
             <div v-for="tchatByAdvert in myTchat"
                 :key="tchatByAdvert.tchat.id_tchat" 
                 class="overflow max-heigth">
-                <div class="card-box p-4 min-h-full pointer" @click="query = tchatByAdvert.tchat.id_tchat">
+                <div class="card-box p-4 min-h-full pointer" @click="setDiscusion(tchatByAdvert.tchat.id_tchat, tchatByAdvert.vendor.pseudo)">
                     <h2>{{ tchatByAdvert.advert.name }}</h2>
                     <p class="break-all">Vendeur : {{ tchatByAdvert.vendor.pseudo }}</p>
                     <p class="text-right">Prix : {{ tchatByAdvert.advert.prix }}</p>
@@ -64,7 +64,8 @@ export default {
         myTchat: undefined, 
         conversation: undefined,
         query: undefined,
-        message: undefined
+        message: undefined,
+        discussWith: undefined
     }),
     async fetch() {
         this.user = JSON.parse(localStorage.user)
@@ -72,8 +73,12 @@ export default {
         if(this.$route.query.query > 0) {
             this.query = this.$route.query.query
             this.getMessageInTchat(this.query)
+            if(this.$route.query.name) {
+               this.discussWith = this.$route.query.name 
+            }
         } else if(this.myTchat.length > 0) {
             this.getMessageInTchat(this.myTchat[0].tchat.id_tchat)
+            this.discussWith = this.myTchat[0].vendor.pseudo
         } 
     },
     watch: {
@@ -109,6 +114,10 @@ export default {
                 }
                 this.message = undefined
             }
+        },
+        setDiscusion(idTchat, nameUser) {
+            this.query = idTchat
+            this.discussWith = nameUser
         }
     }
 }

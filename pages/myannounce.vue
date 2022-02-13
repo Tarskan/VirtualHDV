@@ -184,11 +184,13 @@ export default {
         },
         async CreateAdvert() {
             this.image = this.$refs.file.files[0]
-            const formData = new FormData()
-            formData.append("image", this.image)
-            const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=0aeadb5d1eef28919bf2bb6590cb44e5',
-                formData)
-            this.advertSent.url=imageUpload.data.data.display_url
+            if(this.image) {
+                const formData = new FormData()
+                formData.append("image", this.image)
+                const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=0aeadb5d1eef28919bf2bb6590cb44e5',
+                    formData)
+                this.advertSent.url=imageUpload.data.data.display_url
+            }
             this.advertSent.id_user = this.user.id_user
             await axios.post('http://localhost:8081/api/advert', this.advertSent)
             this.showCreate = false
