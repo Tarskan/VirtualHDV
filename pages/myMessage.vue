@@ -87,10 +87,10 @@ export default {
     },
     methods: {
         async getMyTchat() {
-            this.myTchat = (await axios.get('http://localhost:8081/api/tchat/' + this.user.id_user)).data
+            this.myTchat = (await axios.get(process.env.url + 'tchat/' + this.user.id_user)).data
         },
         async getMessageInTchat(idTchat) {
-           this.conversation = (await axios.get('http://localhost:8081/api/message/' + idTchat)).data 
+           this.conversation = (await axios.get(process.env.url + 'message/' + idTchat)).data 
         },
         async write() {
             if(this.message !== undefined && this.message !== "") {
@@ -100,7 +100,7 @@ export default {
                         id_user: this.user.id_user,
                         id_tchat: this.query 
                     }
-                    await axios.post('http://localhost:8081/api/message', send)
+                    await axios.post(process.env.url + 'message', send)
                     this.getMessageInTchat(this.query)
                 } else {
                     const send = {
@@ -108,7 +108,7 @@ export default {
                         id_user: this.user.id_user,
                         id_tchat: this.myTchat[0].tchat.id_tchat 
                     }
-                    await axios.post('http://localhost:8081/api/message', send)
+                    await axios.post(process.env.url + 'message', send)
                     this.getMessageInTchat(this.myTchat[0].tchat.id_tchat)
                 }
                 this.message = undefined

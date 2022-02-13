@@ -101,6 +101,7 @@ export default {
     await this.MyAnnounce()
     await this.getMyTchat()
     await this.soldAnnounce()
+    console.log(process.env.apiKey)
   },
   computed: {
     paginationAdvert() {
@@ -120,17 +121,17 @@ export default {
   },
   methods: {
     async MyAnnounce(){
-      this.adverts = (await axios.get('http://localhost:8081/api/advert/search/'+ this.user.id_user)).data
+      this.adverts = (await axios.get(process.env.url + 'advert/search/'+ this.user.id_user)).data
       this.countAdvert = this.adverts.length
     },
     goSearch() {
       this.$router.push({name:'search', query: {query: this.query}});
     },
     async soldAnnounce() {
-      this.solded = (await axios.get('http://localhost:8081/api/advert/allsold')).data
+      this.solded = (await axios.get(process.env.url + 'advert/allsold')).data
     },
     async getMyTchat() {
-      this.myTchat = (await axios.get('http://localhost:8081/api/tchat/' + this.user.id_user)).data
+      this.myTchat = (await axios.get(process.env.url + 'tchat/' + this.user.id_user)).data
       this.countTchat = this.myTchat.length
     },
   }

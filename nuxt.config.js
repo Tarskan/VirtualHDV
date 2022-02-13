@@ -1,5 +1,3 @@
-import { SpeakerIcon } from "vue-feather-icons";
-
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -34,18 +32,26 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
+  env: {
+    API_KEY: process.env.apiKey,
+    url: process.env.url,
+  },
+
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
+    ['@nuxtjs/dotenv', { systemvars: true }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/content
-    '@nuxt/content'
+    '@nuxt/content',
+    // https://github.com/nuxt-community/dotenv-module
+	  '@nuxtjs/dotenv'
   ],
 
   // Content module configuration: https://go.nuxtjs.dev/config-content

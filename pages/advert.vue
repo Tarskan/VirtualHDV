@@ -175,7 +175,7 @@ export default {
     },
     methods: {
         async Announce(){
-            this.advert = (await axios.get('http://localhost:8081/api/advert/index/' + this.query)).data
+            this.advert = (await axios.get(process.env.url + 'advert/index/' + this.query)).data
             this.getTypeAdvert()
             if(this.advert.id_user === this.user.id_user) {
                 this.mine = true
@@ -186,11 +186,11 @@ export default {
                 this.sold = true
             }
             if(this.sold && !this.mine) {
-                this.vendor = (await axios.get('http://localhost:8081/api/user/' + this.advert.id_user)).data
+                this.vendor = (await axios.get(process.env.url + 'user/' + this.advert.id_user)).data
             }
         },
         async getTypeAdvert() {
-            this.typeAdverts = (await axios.get('http://localhost:8081/api/advertType')).data
+            this.typeAdverts = (await axios.get(process.env.url + 'advertType')).data
             this.typeAdvertForThis = this.typeAdverts[this.advert.id_adverttype-1]
         },
         async AdvertModification() {
@@ -198,31 +198,31 @@ export default {
             if(this.image) {
                 const formData = new FormData()
                 formData.append("image", this.image)
-                const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=0aeadb5d1eef28919bf2bb6590cb44e5',
+                const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=' + process.env.apiKey,
                     formData)
                 this.advert.url=imageUpload.data.data.display_url
             }
-            await axios.put('http://localhost:8081/api/advert', this.advert)
+            await axios.put(process.env.url + 'advert', this.advert)
             this.typeAdvertForThis = this.typeAdverts[this.advert.id_adverttype-1]
             this.showModification = false 
         },
         async AdvertSuppres() {
-            await axios.delete('http://localhost:8081/api/advert/' + this.advert.id_advert)
+            await axios.delete(process.env.url + 'advert/' + this.advert.id_advert)
             this.$router.push({name:'myAnnounce'});
         },
         async buy() {
-            const buy = await axios.post('http://localhost:8081/api/advert/sold/' + this.advert.id_advert + '/to/' + this.user.id_user)
+            const buy = await axios.post(process.env.url + 'advert/sold/' + this.advert.id_advert + '/to/' + this.user.id_user)
             if(buy.status === 200) {
                 this.sold = true
             }
             if(this.sold && !this.mine) {
-                this.vendor = (await axios.get('http://localhost:8081/api/user/' + this.advert.id_user)).data
+                this.vendor = (await axios.get(process.env.url + 'user/' + this.advert.id_user)).data
                 const tchat = {
                     id_userone: this.vendor.id_user,
                     id_usertwo: this.user.id_user,
                     id_advert: this.advert.id_advert
                 }
-                await axios.post('http://localhost:8081/api/tchat/', tchat)
+                await axios.post(process.env.url + 'tchat/', tchat)
             }
         }
     }

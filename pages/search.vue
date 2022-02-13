@@ -99,14 +99,14 @@ export default {
     },
     methods: {
         async GetAdvert() {
-            this.adverts = (await axios.get('http://localhost:8081/api/advert/' + this.user.id_user)).data
+            this.adverts = (await axios.get(process.env.url + 'advert/' + this.user.id_user)).data
             this.count = this.adverts.length
         },
         async SearchAdvert() {
             if (this.searchQuery === undefined || this.searchQuery === "") {
                 this.GetAdvert() 
             } else {
-                const request = 'http://localhost:8081/api/advert/search/name/' + this.searchQuery + '/without/' + this.user.id_user
+                const request = process.env.url + 'advert/search/name/' + this.searchQuery + '/without/' + this.user.id_user
                 this.adverts = (await axios.get(request)).data
                 this.count = this.adverts.length
             }

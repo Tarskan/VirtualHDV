@@ -125,19 +125,18 @@ export default {
     },
     methods: {
         async GetBoughtAdvert() {
-            this.adverts = (await axios.get('http://localhost:8081/api/advert/bought/' + this.user.id_user)).data
+            this.adverts = (await axios.get(process.env.url + 'advert/bought/' + this.user.id_user)).data
             this.count = this.adverts.length
         },
         async GetSoldAdvert() {
-            this.adverts = (await axios.get('http://localhost:8081/api/advert/sold/' + this.user.id_user)).data
+            this.adverts = (await axios.get(process.env.url + 'advert/sold/' + this.user.id_user)).data
             this.count = this.adverts.length
         },
         async SearchBoughtAdvert() {
             if (this.searchQuery === undefined || this.searchQuery === "") {
                 this.GetBoughtAdvert() 
             } else {
-                const request = 'http://localhost:8081/api/advert/bought/'+ this.user.id_user + '/query/' + this.searchQuery
-                this.adverts = (await axios.get(request)).data
+                this.adverts = (await axios.get(process.env.url + 'advert/bought/'+ this.user.id_user + '/query/' + this.searchQuery)).data
                 this.count = this.adverts.length
             }
         },
@@ -145,8 +144,7 @@ export default {
             if (this.searchQuery === undefined || this.searchQuery === "") {
                 this.GetSoldAdvert()
             } else {
-                const request = 'http://localhost:8081/api/advert/sold/' + this.user.id_user + '/query/' + this.searchQuery
-                this.adverts = (await axios.get(request)).data
+                this.adverts = (await axios.get(process.env.url + 'advert/sold/' + this.user.id_user + '/query/' + this.searchQuery)).data
                 this.count = this.adverts.length
             }
         }

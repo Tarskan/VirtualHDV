@@ -163,18 +163,18 @@ export default {
             if(this.image) {
                 const formData = new FormData()
                 formData.append("image", this.image)
-                const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=0aeadb5d1eef28919bf2bb6590cb44e5',
+                const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=' + process.env.apiKey,
                     formData)
                 this.user.url=imageUpload.data.data.display_url
             }
-            const modifDataUser = await axios.put('http://localhost:8081/api/user', 
+            const modifDataUser = await axios.put(process.env.url + 'user', 
               this.user)
             localStorage.setItem('user', JSON.stringify(modifDataUser.data));
             this.showModification = false
        },
        async Suppress() {
             try {
-                const suppresion = await axios.delete("http://localhost:8081/api/user/" + this.user.id_user)
+                const suppresion = await axios.delete(process.env.url + 'user/' + this.user.id_user)
                 if(suppresion.status === 200) {
                     localStorage.setItem('user', "");
                     this.$router.push({name:'index'}); 

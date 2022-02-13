@@ -151,7 +151,7 @@ export default {
     methods: {
       async Connexion() {
         try {
-          const connexion = await axios.post('http://localhost:8081/api/connexion', 
+          const connexion = await axios.post(process.env.url + 'connexion', 
             this.connexion)
           localStorage.setItem('user', JSON.stringify(connexion.data));
           if(connexion.status === 200) {
@@ -166,10 +166,10 @@ export default {
           this.image = this.$refs.file.files[0]
           const formData = new FormData()
           formData.append("image", this.image)
-          const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=0aeadb5d1eef28919bf2bb6590cb44e5',
+          const imageUpload = await axios.post('https://api.imgbb.com/1/upload?key=' + process.env.apiKey,
             formData)
           this.newUser.url=imageUpload.data.data.display_url
-          const creation = await axios.post('http://localhost:8081/api/user', 
+          const creation = await axios.post(process.env.url + 'user', 
             this.newUser)
           localStorage.setItem('user', JSON.stringify(creation.data));
           if(creation.status === 200) {
