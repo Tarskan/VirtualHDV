@@ -26,7 +26,7 @@
                         class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
                         type="button"
                         @click="write">
-                        Rechercher
+                        Envoyer
                     </button>
                 </form>
             </div>
@@ -137,6 +137,7 @@ export default {
 <style>
 .max-heigth {
     max-height: 48rem;
+    min-height: 48rem;
 }
 .overflow {
     overflow: auto;
