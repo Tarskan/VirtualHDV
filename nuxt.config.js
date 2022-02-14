@@ -33,7 +33,7 @@ export default {
   components: true,
 
   env: {
-    API_KEY: process.env.apiKey,
+    apiKey: process.env.apiKey,
     url: process.env.url,
   },
 

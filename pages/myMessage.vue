@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="p-4 flex-grow">
-                <form class="flex">
+                <div class="flex">
                     <input 
                         id="search" 
                         v-model="message"
@@ -28,7 +28,7 @@
                         @click="write">
                         Envoyer
                     </button>
-                </form>
+                </div>
             </div>
         </div>
         <div class="card-box grow">
