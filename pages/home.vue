@@ -4,7 +4,7 @@
       <form class="flex">
         <label for="search" class="mr-2 pt-2 ml-2 w-28">Recherche :</label>
 
-        <input v-model="query" id="search" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+        <input id="search" v-model="query" type="text" name="search" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
         <button class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" @click.prevent="goSearch">Rechercher</button>
       </form>
     </div>
@@ -101,7 +101,6 @@ export default {
     await this.MyAnnounce()
     await this.getMyTchat()
     await this.soldAnnounce()
-    console.log(process.env.apiKey)
   },
   computed: {
     paginationAdvert() {
