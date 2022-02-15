@@ -117,11 +117,9 @@
                 </NuxtLink>
             </ul>
             <ul class="mb-2">
-                <NuxtLink to="/">
-                    <li class="block hover:bg-blue-700 transition duration-200">
-                        Déconnexion
-                    </li>
-                </NuxtLink>
+                <li class="block hover:bg-blue-700 transition duration-200" @click="deconnexion">
+                    Déconnexion
+                </li>
             </ul>
         </nav>
         <div class="absolute pb-2 bottom-0 left-0 text-center inset-x-0">
@@ -146,7 +144,12 @@ export default {
             } else {
                 this.menuTogle = true
             }
-        }  
+        },
+        deconnexion() {
+            this.user = undefined
+            localStorage.removeItem('user');
+            this.$router.push({name:'index'});
+        }
     }
 }
 </script>

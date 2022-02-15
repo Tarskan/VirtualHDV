@@ -8,6 +8,21 @@
     </div>
 </template>
 
+<script>
+export default {
+    data: () => ({
+        user: undefined
+    }),
+    fetch() {
+        if(localStorage.user) {
+            this.user = JSON.parse(localStorage.user)
+        } else {
+            this.$router.push({name:'index'});
+        }
+    }
+}
+</script>
+
 <style scoped>
 
 </style>
