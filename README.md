@@ -3,9 +3,9 @@
 This project is a school project
 
 You have to create an account on imgbb to get a key to put image, and put this image on an .env file.
-The env file should contain this :
-apiKey= your api key of img bb
-url= http://localhost:8081/api/
+The env file should contain this : </br>
+apiKey= your api key of img bb </br>
+url= http://localhost:8081/api/ </br>
 
 ## Build Setup
 
